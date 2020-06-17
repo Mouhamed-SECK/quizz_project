@@ -34,28 +34,25 @@
                     <?php 
                     
                     // verifie pour un choix texte
-                    if (is_string($questions->responses)) {
+                    if ($questions->typeReponses === "choixText") {
+                      
                         ?>
                     <div class="d-block">
-                        <input type="text" disabled value="<?php echo $questions->responses?>"
+                        <input type="text" disabled value="<?php echo $questions->bonneReponses[0]?>"
                             class="form-control  w-25 p-0" id="exampleInputEmail1" style="height: 24px;"
                             aria-describedby="emailHelp">
                     </div>
                     <?php   
                     } else {
-                        $i=0;
-                 
-                        foreach($questions->responses['response'] as  $response) :
-                            $i++;
-                        ?>
+                        
+                        foreach($questions->responses as  $response) :
+                            $type = $questions->typeReponses =="choixMultiple" ? 'checkbox' :  'radio';
+                         ?>
 
-                    <div
-                        class="custom-control custom-<?php echo $questions->typeReponses =="choixMultiple" ? 'checkbox' :  'radio'; ?>">
-                        <input disabled
-                            type="<?php echo $questions->typeReponses =="choixMultiple" ? 'checkbox' :  'radio'; ?>"
-                            class="custom-control-input" id="response-1"
-                            <?php echo (array_key_exists('isCorrect-'.$i, $questions->responses['correct'])) ? 'checked' : ''; ?>>
-                        <label class="custom-control-label" for="response-1"> <?php echo $response ?>
+                    <div class="custom-control custom-<?php echo $type?>">
+                        <input disabled type="<?php echo $type; ?>" class="custom-control-input" id="response-1"
+                            <?php echo (in_array( $response, $questions->bonneReponses)) ? 'checked' : ''; ?>>
+                        <label class="custom-control-label" for="response"> <?php echo $response ?>
                         </label>
                     </div>
                     <?php endforeach ;

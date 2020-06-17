@@ -11,12 +11,15 @@ class Question {
     
     // Regsiter user
     public function registerQuestion($data){
-        $this->db->query('INSERT INTO questions (libelleQuestion, nbrePoint, typeReponses, responses) VALUES(:libelleQuestion, :nbrePoint, :typeReponses,  :responses)');
+        $this->db->query('INSERT INTO questions (libelleQuestion, nbrePoint, typeReponses, responses, bonneReponses) VALUES(:libelleQuestion, :nbrePoint, :typeReponses,  :responses, :bonneReponses)');
         // Bind values
         $this->db->bind(':libelleQuestion', $data['libelleQuestion']);
         $this->db->bind(':typeReponses', $data['typeReponses']);
         $this->db->bind(':nbrePoint', $data['nbrePoint']);
         $this->db->bind(':responses', $data['responses']);
+        $this->db->bind(':bonneReponses', $data['bonneReponses']);
+
+  
 
   
         // Execute
@@ -36,7 +39,7 @@ class Question {
   
   
       public function getQuestion($depart ,$totalQuestion) {
-        $this->db->query('SELECT libelleQuestion, nbrePoint, typeReponses, responses from questions limit :start, :end ');
+        $this->db->query('SELECT * from questions limit :start, :end ');
         $this->db->bind(':start', $depart);
         $this->db->bind(':end', $totalQuestion);
   

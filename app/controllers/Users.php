@@ -257,9 +257,9 @@
             if ($user->profil === 'admin') {
                 redirect('users/listJoueur/1');
             } else {
-                $_SESSION['cocher'] = [];
-                $_SESSION['remplis'] = [];
-                $_SESSION['questions'] = [];
+                 $_SESSION['repondus'] = [];
+                $_SESSION['allQuestion'] = [];
+                $_SESSION['isCorrect'] = [];
                 redirect('questions/jouer');
 
             }
@@ -272,6 +272,10 @@
             unset($_SESSION['user_profil']);
             unset($_SESSION['user_avatar']);
             unset($_SESSION['user_login']);
+            unset($_SESSION['allQuestion']);
+            unset($_SESSION['repondus']);
+            unset($_SESSION['isCorrect']);
+            
             session_destroy();
             redirect('users/login');
         }

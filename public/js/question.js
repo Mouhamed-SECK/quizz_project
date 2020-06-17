@@ -26,7 +26,10 @@ const responseCompCreate = (id, type) => {
     </div>
   
     <div class="custom-control custom-${type} py-1">
-        <input type="${type}" value="true" name="isCorrect-${id}" class="custom-control-input p-2 " id="response-${id}">
+        <input type="${type}" value=${id} name=${
+      "isCorrect" + (type === "checkbox" ? "-" + id : "")
+    }
+    }" class="custom-control-input p-2 " id="response-${id}">
         <label class="custom-control-label" for="response-${id}">
         </label>
     </div>
@@ -163,10 +166,12 @@ function checkResponse() {
     commonError.innerText = "Veuillez ajouter au moins une réponse";
     return;
   }
+
+  if (getTypeResponse() === "choixText") {
+    return;
+  }
   const type = getTypeResponse() == "choixMultiple" ? "checkbox" : "radio";
   const inputs = document.querySelectorAll(`input[type=${type}]`);
-
-  console.log(inputs);
 
   let isChecked = false;
 

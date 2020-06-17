@@ -2,11 +2,15 @@
 
 extract($data);
 
-$question = $listQuestion[0];
+
 
 $responses = $question->responses;
+$proposition = "";
+if (isset($_SESSION['repondus'][$question->id])) {
+    $proposition = $_SESSION['repondus'][$question->id];  
+} 
 
-// var_dump($response);
+
 ?>
 
 <div id="jeu" class=" row py-4 px-3 bgWhite">
@@ -32,27 +36,37 @@ $responses = $question->responses;
 
             <?php 
                // verifie pour un choix texte
-               if (!is_array($responses)) { ?>
+               if ($question->typeReponses === "choixText" ){ ?>
 
             <div class="d-block">
-                <input type="text" class="form-control   w-25 p-0" name="responseTexte-<?=$currentPage?>"
+                <input type="text" class="form-control   w-25 p-0" name="<?="response/" .$question->id ;?>"
                     id="exampleInputEmail1" style="height: 24px;"
-                    value="<?php echo isset( $_SESSION['remplis'][$currentPage])?  $_SESSION['remplis'][$currentPage]["responseTexte-$currentPage"]: ''; ?>"
-                    aria-describedby="emailHelp">
+                    value="<?php echo !empty($proposition) ? $proposition : '';?>" aria-describedby="emailHelp">
             </div>
 
             <?php   
                 } else {
+                    
                     $i=0;
-                    foreach ($responses['response'] as $response) {   $i++;?>
+                    foreach ($responses as $response) {  
+                         $i++;
+                         $type = $question->typeReponses =="choixMultiple" ? 'checkbox' :  'radio';
+                         $name = $type === 'checkbox' ? "response-$i" : 'response';
 
-            <div
-                class="custom-control custom-<?php echo $question->typeReponses =="choixMultiple" ? 'checkbox' :  'radio'; ?>">
-                <input type="<?php echo $question->typeReponses =="choixMultiple" ? 'checkbox' :  'radio'; ?>"
-                    class="custom-control-input  p-2" value="isCorrect-<?=$i?>" id="response-<?=$i?>"
-                    name="response-<?=$i?>"
-                    <?php echo isset($_SESSION['cocher'][$currentPage]) ?  ( in_array('isCorrect-'.$i, $_SESSION['cocher'][$currentPage])  ? 'checked' : '' ) : '' ; ?>>
-                <label class="custom-control-label" for="response-<?=$i?>"><?php echo $response ?>
+                       
+                        
+
+            ?>
+
+            <div class="custom-control custom-<?php echo $type ?>">
+                <input type="<?php echo $type ?>" class="custom-control-input  p-2"
+                    value="<?php echo $response . "/" .$question->id?>" id="response-<?=$i?>" name="<?=$name?>" <?php echo is_array($proposition) ?  (in_array($response , $proposition) ? 'checked' : '') : ($response === $proposition ? 'checked' : '');
+                    
+                    ?>>
+
+
+
+                <label class=" custom-control-label" for="response-<?=$i?>"><?php echo $response ?>
                 </label>
             </div>
             <?php  
